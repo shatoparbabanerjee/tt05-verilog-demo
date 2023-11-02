@@ -4,5 +4,24 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 
 @cocotb.test()
 async def test_my_design(dut):
-    dut._log.info("start")
+    CONSTANT_CURRENT = 40
 
+    dut._log.info("Start Simulation")
+
+    #init clock 
+    clock = Clock(dut.clk, 1, units="ns")
+    cocotb.start_soon(clock.start())
+
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 10)
+    dut.rst_n.value = 1 
+
+    dut.ui_in.value = CONSTANT_CURRENT
+    dut.ena.value = 1 
+
+    for i in range(100):
+        dut._log.info(i)
+        await RisingEdge(dut.clk)
+    
+    assert dut.ui_in.value == dut.ui_in.value
+    dut._log.info("Finished Test")
