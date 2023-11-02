@@ -8,7 +8,9 @@ module lif (
     output wire [7:0] state
 );
 
-    reg [7:0] next_state, threshold;
+    reg [7:0] threshold; 
+    reg [3:0] beta; 
+    wire [7:0] next_state;
     // resting potential and threshold
 
     always @(posedge clk) begin
@@ -18,9 +20,11 @@ module lif (
         end else begin
             state <= next_state;
         end
+    end
+    
     
     // next_state logic 
-    assign next_state = current + (state >> 1); 
+    assign next_state = current + ( spike ? 0 : (state * beta));
 
     //spiking 
     assign spike = (state >= threshold);
