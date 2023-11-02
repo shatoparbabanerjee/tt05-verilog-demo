@@ -8,8 +8,6 @@ module lif (
 
     reg [7:0] next_state, threshold;
     // resting potential and threshold
-    assign next_state = current + (state >> 1);
-    assign spike = (state >= threshold);
 
     always @(posedge clk) begin
         if (!rst_n) begin
