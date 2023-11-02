@@ -1,12 +1,12 @@
 module lif (
     input wire [7:0] current,
-    output wire [7:0] next_state,
+    output wire [7:0] state,
     output wire spike,
     input wire clk,
     input wire rst_n
 );
 
-    reg [7:0] state, threshold;
+    reg [7:0] next_state, threshold;
     // resting potential and threshold
     assign next_state = current + (state >> 1);
     assign spike = (state >= threshold);
