@@ -13,7 +13,7 @@ module tt_um_lif (
 
     assign uio_oe = 8'b11111111;
 
-lif lif(
+module lif(
     input wire [7:0] current,
     input wire      clk,
     input wire      rst_n, 

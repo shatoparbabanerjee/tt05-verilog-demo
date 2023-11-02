@@ -23,6 +23,5 @@ module lif (
     //spiking 
     assign spike = (state >= threshold);
     
-
 endmodule
 
