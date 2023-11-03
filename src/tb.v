@@ -44,7 +44,7 @@ module tb ();
     //     .rst_n      (rst_n)     // not reset
     //     );
     
-    tt_um_lif tt_um_lif (
+    tt_um_tm_lif tt_um_tm_lif (
     // include power ports for the Gate Level test
     `ifdef GL_TEST
         .VPWR( 1'b1),

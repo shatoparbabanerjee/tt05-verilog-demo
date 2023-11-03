@@ -8,9 +8,9 @@ module tm_lif (
     output wire [7:0] state
 );
 
-    reg [7:0] threshold [0:7];
-    wire [7:0] next_state [0:7];
-    wire [7:0] spike [0:7];
+    reg [7:0] threshold [7:0];
+    wire [7:0] next_state [7:0];
+    wire [7:0] spike [7:0];
     reg [2:0] tm_counter;
 
     always @(posedge clk) begin
