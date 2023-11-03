@@ -16,10 +16,11 @@ module tt_um_lif (
     assign uio_out[6:0] = 7'd0;       // Initialize the 7-segment display output to all zeros
 
     // Instantiate the segment display module
-    //lif lif1(.current(ui_in), .clk(clk), .rst_n(rst_n), .spike(uio_out[7]), .state(uo_out));
-    //lif lif2(.current({uio_out[7], 7'b0000000}), .clk(clk), .rst_n(rst_n), .spike(uio_out[6]), .state(uo_out));
-    current_based_lif lif1(.input_current(ui_in), .clk(clk), .rst_n(rst_n), .spike(uio_out[7]), .state(next_state));
+    lif lif1(.current(ui_in), .clk(clk), .rst_n(rst_n), .spike(uio_out[7]), .state(uo_out));
+    lif lif2(.current({uio_out[7], 7'b0000000}), .clk(clk), .rst_n(rst_n), .spike(uio_out[6]), .state(uo_out));
+    //current_based_lif lif1(.input_current(ui_in), .clk(clk), .rst_n(rst_n), .spike(uio_out[7]), .state(next_state));
 
+    // Connect the output state from the current-based LIF neuron to the 7-segment display output
     assign uo_out = next_state;
 
 endmodule
