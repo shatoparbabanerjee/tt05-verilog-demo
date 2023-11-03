@@ -10,7 +10,7 @@ module tt_um_lif (
     input  wire       clk,      // Input clock signal
     input  wire       rst_n     // Input reset signal (active low)
 );
-    wire [7:0] next_state; // wire to hold next_state value
+    reg [7:0] next_state; // wire to hold next_state value
 
     assign uio_oe = 8'b11111111;      // Set all bits of the bidirectional enable path to 1, indicating they are in output mode
     assign uio_out[6:0] = 7'd0;       // Initialize the 7-segment display output to all zeros
