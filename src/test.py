@@ -42,7 +42,7 @@ def test_lif_neuron(dut):
         yield cocotb.edge(dut.clk)
 
     # Apply some input current
-    dut.ui_in <= 8'h12;
+    dut.ui_in <= 20
 
     # Wait for a few clock cycles
     for _ in range(10):
