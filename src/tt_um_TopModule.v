@@ -14,8 +14,8 @@ module tt_um_TopModule (
     assign uio_oe = 8'b11111111;      // Set all bits of the bidirectional enable path to 1, indicating they are in output mode
     assign uio_out[4:0] = 5'd0;       // Initialize the 7-segment display output to all zeros
 
-    reg [7:0] state_signals;
-    reg [7:0] state_signals2;
+    wire [7:0] state_signals;
+    wire [7:0] state_signals2;
 
     assign uo_out[7:0] = state_signals[7:0];  
 
