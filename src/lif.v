@@ -1,7 +1,7 @@
 `default_nettype none
 
 module lif (
-     input wire [7:0] current,
+    input wire [7:0] current,
     input wire clk,
     input wire rst_n,
     output wire [7:0] spike,
@@ -10,7 +10,6 @@ module lif (
 
     reg [7:0] threshold [0:7];
     wire [7:0] next_state [0:7];
-    wire [7:0] spike [0:7];
     reg [2:0] tm_counter;
 
     always @(posedge clk) begin

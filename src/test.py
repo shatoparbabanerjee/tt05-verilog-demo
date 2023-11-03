@@ -20,7 +20,6 @@ async def test_my_design(dut):
     dut.ena.value = 1 
 
     for i in range(100):
-        dut._log.info(i)
         await RisingEdge(dut.clk)
     
     assert dut.ui_in.value == dut.ui_in.value
