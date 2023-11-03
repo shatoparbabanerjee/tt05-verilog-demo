@@ -4,7 +4,7 @@ module tm_lif (
     input wire [7:0] current,
     input wire clk,
     input wire rst_n,
-    output wire [7:0] spike,
+    output wire [7:0] spike
     //output wire [7:0] state
 );
 
