@@ -5,7 +5,7 @@ module tm_lif (
     input wire clk,
     input wire rst_n,
     output wire [7:0] spike,
-    output wire [7:0] state
+    output reg [7:0] state
 );
 
     reg [7:0] threshold;

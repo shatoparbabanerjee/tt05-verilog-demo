@@ -15,7 +15,7 @@ module tt_um_tm_lif (
     assign uio_out[6:0] = 7'd0;
 
     wire [7:0] spike;
-    wire [7:0] state;
+    reg [7:0] state;
 
     tm_lif tm_lif_inst(
         .current(ui_in),
