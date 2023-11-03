@@ -25,6 +25,7 @@ module tm_lif (
                 if (tm_counter == i) begin
                     next_state[i] <= state[i]; 
                 end
+                spike[i] <= (next_state[i] >= threshold[i]);
             end
             tm_counter <= tm_counter + 1;
         end
@@ -35,11 +36,5 @@ module tm_lif (
             next_state[i] = current + (state[i] >> 1);
         end
     end
-
-    always @* begin
-            for (int i = 0; i < 8; i = i + 1) begin
-                spike[i] = (next_state[i] >= threshold[i]);
-            end
-        end
 
 endmodule
