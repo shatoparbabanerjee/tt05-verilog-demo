@@ -3,11 +3,12 @@ module current_based_lif (
     input wire clk,                // Input clock signal
     input wire rst_n,              // Input reset signal (active low)
     output wire spike,             // Output spike signal
-    output reg [7:0] state         // Output state register, 8 bits wide
+    output wire [7:0] next_state   // Output next_state signal, 8 bits wide
 );
 
-    wire [7:0] next_state;          // Wire to compute the next state value
     parameter I_thresh = 8'h80;    // Threshold current, adjust as needed
+
+    reg [7:0] state;               // Internal state register
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
