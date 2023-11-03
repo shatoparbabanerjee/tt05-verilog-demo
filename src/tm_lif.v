@@ -1,15 +1,11 @@
 `default_nettype none
 
 module tm_lif (
-    input wire [7:0] current,
-    input wire clk,
-    input wire rst_n,
-    output wire [7:0] state
+    input wire [7:0] current
 );
 
     reg [7:0] threshold [7:0];
     wire [7:0] next_state [7:0];
-    wire [7:0] spike [7:0];
     reg [2:0] tm_counter;
 
     always @(posedge clk) begin
