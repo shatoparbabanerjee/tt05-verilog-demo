@@ -8,8 +8,8 @@ module tm_lif (
     output wire [7:0] state
 );
 
-    wire [7:0] threshold [7:0];
-    wire [7:0] next_state [7:0];
+    reg [7:0] threshold;
+    reg [7:0] next_state;
     reg [2:0] tm_counter;
     
     integer i; // Declare i outside the loop
