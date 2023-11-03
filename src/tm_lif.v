@@ -14,14 +14,17 @@ module tm_lif (
 
     always @(posedge clk) begin
         if (!rst_n) begin
-            state <= 0;
-            threshold <= 127;
+            for (int i = 0; i < 8; i = i + 1) begin
+                state[i] <= 0;
+                threshold[i] <= 127;
+                next_state[i] <= 0;
+            end
             tm_counter <= 0;
         end else begin
             for (int i = 0; i < 8; i = i + 1) begin
                 if (tm_counter == i) begin
-                    state <= next_state[i];
-                    spike[i] <= (state >= threshold[i]);
+                    state[i] <= next_state[i];
+                    spike[i] <= (state[i] >= threshold[i]);
                 end
             end
             tm_counter <= tm_counter + 1;
