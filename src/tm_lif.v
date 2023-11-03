@@ -8,8 +8,8 @@ module tm_lif (
     output wire [7:0] state
 );
 
-    reg [7:0] threshold [7:0];
-    reg [7:0] next_state [7:0];
+    wire [7:0] threshold [7:0];
+    wire [7:0] next_state [7:0];
     reg [2:0] tm_counter;
 
     always @(posedge clk) begin
@@ -23,9 +23,8 @@ module tm_lif (
         end else begin
             for (int i = 0; i < 8; i = i + 1) begin
                 if (tm_counter == i) begin
-                    next_state[i] <= state[i]; // Update next_state first
+                    next_state[i] <= state[i]; 
                 end
-                spike[i] <= (next_state[i] >= threshold[i]);
             end
             tm_counter <= tm_counter + 1;
         end
@@ -36,5 +35,11 @@ module tm_lif (
             next_state[i] = current + (state[i] >> 1);
         end
     end
+
+    always @* begin
+            for (int i = 0; i < 8; i = i + 1) begin
+                spike[i] = (next_state[i] >= threshold[i]);
+            end
+        end
 
 endmodule
