@@ -4,15 +4,15 @@ module tm_lif (
     input wire [7:0] current,
     input wire clk,
     input wire rst_n,
-    output wire [7:0] spike,
-    output wire [7:0] state
+    output reg [7:0] spike,
+    output reg [7:0] state
 );
 
-    wire [7:0] threshold [7:0];
-    wire [7:0] next_state [7:0];
+    reg [7:0] threshold [7:0];
+    reg [7:0] next_state [7:0];
     reg [2:0] tm_counter;
 
-    always @(posedge clk) begin
+    always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             for (int i = 0; i < 8; i = i + 1) begin
                 state[i] <= 0;
