@@ -1,29 +1,32 @@
-`default_nettype none
-
 module current_based_lif (
-    input wire [7:0] synaptic_current,
-    input wire clk,
-    input wire rst_n,
-    output wire spike,
-    output reg [7:0] membrane_potential
+    input wire [7:0] input_current, // Input current, 8 bits wide
+    input wire clk,                // Input clock signal
+    input wire rst_n,              // Input reset signal (active low)
+    output wire spike,             // Output spike signal
+    output reg [7:0] state         // Output state register, 8 bits wide
 );
 
-    reg [7:0] threshold;  
-    wire [7:0] next_membrane_potential;
+    wire [7:0] next_state;          // Wire to compute the next state value
+    parameter I_thresh = 8'h80;    // Threshold current, adjust as needed
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            membrane_potential <= 8'b0;
-            threshold <= 8'h7F; // Threshold value (adjust as needed)
+            state <= 8'h00;          // Reset the state to 0 when reset is active
         end else begin
-            membrane_potential <= next_membrane_potential;
+            state <= next_state;     // Update the state with the next_state value
         end
     end
 
-    // Leaky integration
-    assign next_membrane_potential = membrane_potential + (synaptic_current >> 1);
+    // Add logic to increment or decrement the state based on input_current
+    always @(*) begin
+        if (input_current >= I_thresh) begin
+            next_state = state - 8'h01; // Decrement the state
+        end else begin
+            next_state = state + input_current; // Increment the state based on input_current
+        end
+    end
 
-    // Check for spike generation
-    assign spike = (membrane_potential >= threshold);
+    // Determine if a spike should occur based on the state and threshold
+    assign spike = (state >= I_thresh);
 
 endmodule
