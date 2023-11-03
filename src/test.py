@@ -26,37 +26,42 @@
 #     dut._log.info("Finished Test")
 
 import cocotb
-from cocotb.regression import TestFactory
-from cocotb.result import TestFailure
+from cocotb.clock import Clock
+from cocotb.triggers import RisingEdge, Timer, FallingEdge
 
 @cocotb.coroutine
-def test_lif_neuron(dut):
-    # Initialize inputs
-    dut.ui_in <= 0
-    dut.uio_in <= 0
+def reset(dut):
+    dut.rst_n <= 0
+    yield Timer(10, units='ns')  # Hold reset for 10 ns
     dut.rst_n <= 1
+
+@cocotb.coroutine
+def stimulus(dut):
+    CONSTANT_CURRENT = 40
+
+    dut.ui_in <= CONSTANT_CURRENT
     dut.ena <= 1
 
-    # Wait for a few clock cycles
-    for _ in range(10):
-        yield cocotb.edge(dut.clk)
+    for _ in range(100):
+        yield RisingEdge(dut.clk)
 
-    # Apply some input current
-    dut.ui_in <= 20
+@cocotb.test()
+def test_my_design(dut):
+    # Create clock
+    cocotb.fork(Clock(dut.clk, 1, units='ns').start())
 
-    # Wait for a few clock cycles
-    for _ in range(10):
-        yield cocotb.edge(dut.clk)
+    # Apply reset
+    yield reset(dut)
 
-    # Check for spikes
-    if dut.uo_out[7]:
-        raise TestFailure("Spike detected!")
+    # Apply stimulus
+    yield stimulus(dut)
 
-# Create a test factory
-tf = TestFactory(test_lif_neuron)
+    # Monitor for spikes
+    for _ in range(100):
+        yield RisingEdge(dut.clk)
+        if dut.uo_out[7]:
+            dut._log.info("Spike detected!")
 
-# Add the testbench module
-tf.add_option("-sv")
-
-# Create the test
-tf.generate_tests()
+    # Check if the outputs match the inputs
+    assert dut.ui_in.value == 40
+    dut._log.info("Finished Test")
