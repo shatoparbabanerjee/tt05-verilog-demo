@@ -10,7 +10,7 @@ module tm_lif (
 
     reg [7:0] threshold [7:0];
     reg [7:0] next_state [7:0];
-    reg [7:0] state [7:0];
+    //reg [7:0] state [7:0];
     reg [2:0] tm_counter;
 
     always @(posedge clk) begin
