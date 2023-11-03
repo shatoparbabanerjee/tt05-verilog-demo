@@ -15,7 +15,7 @@ module LIFNeuron (
   parameter I_threshold = 8'b100;  // Firing threshold
   parameter tau = 4'b0010;         // Time constant for current decay
   
-  always @(posedge clk or posedge rst_n) begin
+  always @(posedge clk) begin
     if (rst_n) begin
       I_accumulator <= 8'b0;
       sp <= 1'b0;
