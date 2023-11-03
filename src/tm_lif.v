@@ -17,11 +17,11 @@ module tm_lif (
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             for (i = 0; i < 8; i = i + 1) begin
-                state[i] <= 0;
+                state[i] <= 8'b0;
                 threshold[i] <= 8'b01111111; // Correct threshold initialization
-                next_state[i] <= 0;
+                next_state[i] <= 8'b0;
             end
-            tm_counter <= 0;
+            tm_counter <= 3'b0;
         end else begin
             for (i = 0; i < 8; i = i + 1) begin
                 if (tm_counter == i) begin
