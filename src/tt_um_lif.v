@@ -12,10 +12,17 @@ module tt_um_lif (
 );
 
     assign uio_oe = 8'b11111111;      // Set all bits of the bidirectional enable path to 1, indicating they are in output mode
-    assign uio_out[6:0] = 7'd0;       // Initialize the 7-segment display output to all zeros
+    assign uio_out[4:0] = 5'd0;       // Initialize the 7-segment display output to all zeros
+
+    wire state_signals[7:0]; // another array
+    assign state_signals [4:0] = 5'b00000;
 
     // Instantiate the segment display module
-    lif lif1(.current(ui_in), .clk(clk), .rst_n(rst_n), .spike(uio_out[7]), .state(uo_out));
-    //lif lif2(.current({uio_out[7], 7'b0000000}), .clk(clk), .rst_n(rst_n), .spike(uio_out[6]), .state(uo_out));
-    
+    lif lif1(.current(ui_in), .clk(clk), .rst_n(rst_n), .spike(uio_out[7]), .state(state_signals[7]));
+    lif lif2(.current({uio_out[7], 7'b0000000}), .clk(clk), .rst_n(rst_n), .spike(uio_out[6]), .state(state_signals[6]));
+    lif lif3(.current({uio_out[6], 7'b0000000}), .clk(clk), .rst_n(rst_n), .spike(uio_out[5]), .state(state_signals[5]));
+
+
+    assign uo_out [7:0] = state_signals [7:0];
+
 endmodule
