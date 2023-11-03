@@ -3,7 +3,6 @@
 module LIFNeuron (
   input wire clk,         // Clock input
   input wire rst_n,       // Reset input
-  input wire ena,      // Enable input
   input wire [7:0] Isyn,  // Synaptic current input (8-bit current)
   output wire spike       // Spike output
 );
@@ -19,7 +18,7 @@ module LIFNeuron (
     if (rst_n) begin
       I_accumulator <= 8'b0;
       sp <= 1'b0;
-    end else if (ena) begin
+    end else  begin
       // Update the current accumulation
       if (I_accumulator > 8'b0) begin
         I_accumulator <= I_accumulator - (I_accumulator >> tau) + Isyn;

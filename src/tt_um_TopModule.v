@@ -20,11 +20,8 @@ module tt_um_TopModule (
     assign uo_out[7:0] = state_signals[7:0];  
 
     // Instantiate the segment display module
-    LIFNeuron lif1(.clk(clk), .rst_n(rst_n), .ena(ena), .Isyn(uio_in), .spike(uio_out[7]));
-    LIFNeuron lif2(.clk(clk), .rst_n(rst_n), .ena(ena), .Isyn(state_signals), .spike(uio_out[6]));
-    LIFNeuron lif3(.clk(clk), .rst_n(rst_n), .ena(ena), .Isyn(state_signals2), .spike(uio_out[5]));
-
-
-   
+    LIFNeuron lif1(.clk(clk), .rst_n(rst_n), .Isyn(uio_in), .spike(uio_out[7]));
+    LIFNeuron lif2(.clk(clk), .rst_n(rst_n), .Isyn(state_signals), .spike(uio_out[6]));
+    LIFNeuron lif3(.clk(clk), .rst_n(rst_n), .Isyn(state_signals2), .spike(uio_out[5]));
 
 endmodule
