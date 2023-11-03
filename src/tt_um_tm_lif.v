@@ -14,18 +14,16 @@ module tt_um_tm_lif (
     assign uio_oe = 8'b11111111;
     assign uio_out[6:0] = 7'd0;
 
-    wire [7:0] spike;
-    reg [7:0] state;
+
 
     tm_lif tm_lif_inst(
         .current(ui_in),
         .clk(clk),
         .rst_n(rst_n),
-        .spike(spike),
-        .state(state)
+        .spike(uio_out),
+        .state(uo_out)
     );
 
-    assign uo_out = spike;
     assign uio_out[7] = ena;
 
 endmodule
