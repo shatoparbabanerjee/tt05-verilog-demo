@@ -5,12 +5,12 @@ module tm_lif (
     input wire clk,
     input wire rst_n,
     output wire [7:0] spike,
-    output wire [7:0] state
+    //output wire [7:0] state
 );
 
     reg [7:0] threshold [7:0];
     reg [7:0] next_state [7:0];
-    //reg [7:0] state [7:0];
+    reg [7:0] state [7:0];
     reg [2:0] tm_counter;
 
     always @(posedge clk) begin
