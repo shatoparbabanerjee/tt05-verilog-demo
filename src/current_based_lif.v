@@ -1,3 +1,5 @@
+`default_nettype none
+
 module current_based_lif (
     input wire [7:0] input_current, // Input current, 8 bits wide
     input wire clk,                // Input clock signal
