@@ -1,4 +1,4 @@
-`default_nettype none
+default_nettype none
 
 module tm_lif (
     input wire [7:0] current,
@@ -23,9 +23,9 @@ module tm_lif (
         end else begin
             for (int i = 0; i < 8; i = i + 1) begin
                 if (tm_counter == i) begin
-                    next_state[i] <= state[i];
-                    spike[i] <= (state[i] >= threshold[i]);
+                    next_state[i] <= state[i]; // Update next_state first
                 end
+                spike[i] <= (next_state[i] >= threshold[i]);
             end
             tm_counter <= tm_counter + 1;
         end
@@ -34,9 +34,7 @@ module tm_lif (
     always @* begin
         for (int i = 0; i < 8; i = i + 1) begin
             next_state[i] = current + (state[i] >> 1);
-            spike[i] = (state[i] >= threshold[i]);
         end
     end
-
 
 endmodule
