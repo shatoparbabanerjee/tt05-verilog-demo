@@ -1,26 +1,47 @@
 `default_nettype none
 
 module lif (
-    input wire [7:0] current,   // Input current, 8 bits wide
-    input wire clk,             // Input clock signal
-    input wire rst_n,           // Input reset signal (active low)
-    output wire spike,          // Output spike signal
-    output reg [7:0] state      // Output state register, 8 bits wide
+  input wire clk,         // Clock input
+  input wire rst_n,       // Reset input
+  input wire [7:0] Isyn,  // Synaptic current input (8-bit current)
+  output wire spike       // Spike output
 );
 
-    reg [7:0] threshold;        // Internal register for threshold value
-    wire [7:0] next_state;      // Wire to compute the next state value
+  reg [7:0] I_accumulator; // Current accumulator
+  reg sp;              // Spike signal
+  reg refractory_period = 8; // Refractory period in clock cycles
+  //reg [7:0] I_accumulator_2;
 
-    always @(posedge clk) begin
-        if (!rst_n) begin
-            state <= 0;          // Reset the state to 0 when reset is active
-            threshold <= 127;    // Set the threshold value to 127 during reset
-        end else begin
-            state <= next_state; // Update the state with the next_state value
-        end
+  assign spike = sp;
+  parameter I_threshold = 8'b100;  // Firing threshold
+  parameter tau = 4'b0010;         // Time constant for current decay
+  
+  always @(posedge clk) begin
+    if (rst_n) begin
+      I_accumulator <= 8'b0;
+      sp <= 1'b0;
+    end else begin
+      // Update the current accumulation
+      if (I_accumulator > 8'b0) begin
+        I_accumulator <= I_accumulator - (I_accumulator >> tau) + Isyn;
+      end else begin
+        I_accumulator <= I_accumulator + Isyn;
+      end
+      // Check for firing
+      I_accumulator <= (sp) ? I_threshold : I_accumulator;
+    //   if (I_accumulator_2 >= I_threshold) begin
+    //     sp <= 1'b1;
+    //     I_accumulator_2 <= 8'b0; // Reset the current accumulation
+    //   end
     end
-
-    assign next_state = current + (state >> 1);   // Compute the next state as the sum of current and half of the current state
-    assign spike = (state >= threshold);           // Determine if a spike should occur based on the state and threshold
+    
+    // Refractory period countdown
+    if (refractory_period > 0) begin
+      if (sp) begin
+        sp <= 1'b0;
+        refractory_period <= refractory_period - 1;
+      end
+    end
+  end
 
 endmodule

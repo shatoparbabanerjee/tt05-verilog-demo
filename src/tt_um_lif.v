@@ -14,18 +14,18 @@ module tt_um_lif (
     assign uio_oe = 8'b11111111;      // Set all bits of the bidirectional enable path to 1, indicating they are in output mode
     assign uio_out[4:0] = 5'd0;       // Initialize the 7-segment display output to all zeros
 
-    reg [7:0] state_signals;
-    reg [7:0] state_signals2;
-    reg [7:0] state_signals3;
+    wire [7:0] state_signals;
+    wire [7:0] state_signals2;
+    wire [7:0] state_signals3;
 
-    assign uo_out[7:0] = state_signals[7:0];  
+    assign uo_out = 8'd0;
+    assign state_signals = ui_in;
+    assign state_signals2 = {7'b0, uio_out[7]}; // 0000000
+    assign state_signals3 = {7'b0, uio_out[6]}; // 0000000  
 
     // Instantiate the segment display module
-    lif lif1(.current(ui_in), .clk(clk), .rst_n(rst_n), .spike(uio_out[7]), .state(state_signals));
-    lif lif2(.current({uio_out[7], 7'b0000000}), .clk(clk), .rst_n(rst_n), .spike(uio_out[6]), .state(state_signals2));
-    lif lif3(.current({uio_out[6], 7'b0000000}), .clk(clk), .rst_n(rst_n), .spike(uio_out[5]), .state(state_signals3));
-
-
-   
+    lif lif1(.clk(clk), .rst_n(rst_n), .Isyn(state_signals), .spike(uio_out[7]));
+    lif lif2(.clk(clk), .rst_n(rst_n), .Isyn(state_signals2), .spike(uio_out[6]));
+    lif lif3(.clk(clk), .rst_n(rst_n), .Isyn(state_signals3), .spike(uio_out[5]));
 
 endmodule

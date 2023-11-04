@@ -4,7 +4,7 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 
 @cocotb.test()
 async def test_my_design(dut):
-    CONSTANT_CURRENT = 40
+    CONSTANT_CURRENT = 80
 
     dut._log.info("Start Simulation")
 
@@ -19,7 +19,7 @@ async def test_my_design(dut):
     dut.ui_in.value = CONSTANT_CURRENT
     dut.ena.value = 1 
 
-    for i in range(100):
+    for i in range(200):
         await RisingEdge(dut.clk)
     
     assert dut.ui_in.value == dut.ui_in.value
