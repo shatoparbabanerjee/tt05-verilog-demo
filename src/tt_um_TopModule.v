@@ -18,7 +18,10 @@ module tt_um_TopModule (
     wire [7:0] state_signals2;
     wire [7:0] state_signals3;
 
-   //assign uio_in[7:0] = state_signals[7:0];  
+    assign uo_out = 8'd0;
+    assign state_signals = ui_in;
+    assign state_signals2 = {7'b0, uio[7]}; // 0000000
+    assign state_signals3 = {7'b0, uio[6]}; // 0000000  
 
     // Instantiate the segment display module
     LIFNeuron lif1(.clk(clk), .rst_n(rst_n), .Isyn(state_signals), .spike(uio_out[7]));
