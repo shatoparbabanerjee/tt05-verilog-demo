@@ -10,8 +10,9 @@ module LIFNeuron (
   reg [7:0] I_accumulator; // Current accumulator
   reg sp;              // Spike signal
   reg refractory_period = 8; // Refractory period in clock cycles
-  reg [7:0] I_accumulator_2;
+  //reg [7:0] I_accumulator_2;
 
+  assign spike = sp;
   parameter I_threshold = 8'b100;  // Firing threshold
   parameter tau = 4'b0010;         // Time constant for current decay
   
@@ -27,7 +28,7 @@ module LIFNeuron (
         I_accumulator <= I_accumulator + Isyn;
       end
       // Check for firing
-      I_accumulator <= (sp) ? I_threshold : I_accumulator_2;
+      I_accumulator <= (sp) ? I_threshold : I_accumulator;
     //   if (I_accumulator_2 >= I_threshold) begin
     //     sp <= 1'b1;
     //     I_accumulator_2 <= 8'b0; // Reset the current accumulation
