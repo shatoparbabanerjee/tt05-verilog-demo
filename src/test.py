@@ -47,6 +47,10 @@ async def test_my_design(dut):
     dut.ui_in <= CONSTANT_CURRENT
     dut.ena <= 1 
 
+    # Use cocotb.fork with Simulator object
+    sim = cocotb.Simulator.get_simulator()
+    sim_fork = sim.fork(clock.start())
+
     for i in range(1000):  # Extend simulation duration
         await RisingEdge(dut.clk)
     
