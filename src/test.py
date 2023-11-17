@@ -16,16 +16,12 @@ async def test_my_design(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value <= 1 
 
-    # Test Scenario 1
-    dut.ui_in.value <= CONSTANT_CURRENT
+    # Test Scenario 1: Normal Firing
+    dut.ui_in.value = CONSTANT_CURRENT
     dut.ena.value <= 1 
 
-    for i in range(200):
+    for i in range(1000):
         await RisingEdge(dut.clk)
-    
     assert dut.ui_in.value == dut.ui_in.value
-    # assert dut.spike.value == 1
-    # await Timer(100, units='ns')
-    # assert dut.spike.value == 0
 
     dut._log.info("Finished Test")
